@@ -3,7 +3,6 @@
 
 using System.Runtime.Serialization;
 using Microsoft.CodeAnalysis.ExternalAccess.Razor;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
 using RoslynFormattingOptions = Roslyn.LanguageServer.Protocol.FormattingOptions;
 
 namespace Microsoft.CodeAnalysis.Razor.Formatting;

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Test.Common;
 using Microsoft.AspNetCore.Razor.Test.Common.Editor;
 using Microsoft.VisualStudio.LanguageServer.ContainedLanguage;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
+using Roslyn.LanguageServer.Protocol;
 using Microsoft.VisualStudio.Razor.Debugging;
 using Microsoft.VisualStudio.Text;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;
-using Range = Microsoft.VisualStudio.LanguageServer.Protocol.Range;
+using LspRange = Roslyn.LanguageServer.Protocol.Range;
 
 namespace Microsoft.VisualStudio.Razor.LanguageClient.Debugging;
 
@@ -135,7 +135,7 @@ public class RazorBreakpointResolverTest : ToolingTestBase
         var hostBreakpointRange = VsLspFactory.CreateSingleLineRange(start: hostDocumentPosition, length: ValidBreakpointCSharp.Length);
         var projectionProvider = new TestLSPBreakpointSpanProvider(
             _documentUri,
-            new Dictionary<Position, Range>()
+            new Dictionary<Position, LspRange>()
             {
                 [hostDocumentPosition] = hostBreakpointRange
             });
@@ -184,6 +184,6 @@ public class RazorBreakpointResolverTest : ToolingTestBase
         }
 
         var line = textBuffer.CurrentSnapshot.GetLineFromPosition(index);
-        return VsLspFactory.CreatePosition(line.LineNumber, index - line.Start.Position);
+        return LspFactory.CreatePosition(line.LineNumber, index - line.Start.Position);
     }
 }

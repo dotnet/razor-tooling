@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Razor.LanguageServer.EndpointContracts;
 using Microsoft.AspNetCore.Razor.LanguageServer.Hosting;
 using Microsoft.CodeAnalysis.Razor.Protocol;
 using Microsoft.CodeAnalysis.Razor.Protocol.ColorPresentation;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
-using LspColorPresentation = Microsoft.CodeAnalysis.Razor.Protocol.ColorPresentation.ColorPresentation;
 
 namespace Microsoft.AspNetCore.Razor.LanguageServer.ColorPresentation;
 

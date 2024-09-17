@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Razor.Protocol;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
+using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -57,7 +57,7 @@ public class DocumentOnTypeFormattingEndpointTest(ITestOutputHelper testOutput) 
         {
             TextDocument = new TextDocumentIdentifier { Uri = uri, },
             Character = ".",
-            Position = VsLspFactory.CreatePosition(2, 11),
+            Position = LspFactory.CreatePosition(2, 11),
             Options = new FormattingOptions { InsertSpaces = true, TabSize = 4 }
         };
         var requestContext = CreateRazorRequestContext(documentContext);
@@ -91,7 +91,7 @@ public class DocumentOnTypeFormattingEndpointTest(ITestOutputHelper testOutput) 
         {
             TextDocument = new TextDocumentIdentifier { Uri = uri, },
             Character = ".",
-            Position = VsLspFactory.CreatePosition(2, 11),
+            Position = LspFactory.CreatePosition(2, 11),
             Options = new FormattingOptions { InsertSpaces = true, TabSize = 4 },
         };
         var requestContext = CreateRazorRequestContext(documentContext);
@@ -125,7 +125,7 @@ public class DocumentOnTypeFormattingEndpointTest(ITestOutputHelper testOutput) 
         {
             TextDocument = new TextDocumentIdentifier { Uri = uri, },
             Character = "}",
-            Position = VsLspFactory.CreatePosition(2, 11),
+            Position = LspFactory.CreatePosition(2, 11),
             Options = new FormattingOptions { InsertSpaces = true, TabSize = 4 },
         };
         var requestContext = CreateRazorRequestContext(documentContext);
@@ -159,7 +159,7 @@ public class DocumentOnTypeFormattingEndpointTest(ITestOutputHelper testOutput) 
         {
             TextDocument = new TextDocumentIdentifier { Uri = uri, },
             Character = "}",
-            Position = VsLspFactory.CreatePosition(2, 11),
+            Position = LspFactory.CreatePosition(2, 11),
             Options = new FormattingOptions { InsertSpaces = true, TabSize = 4 }
         };
         var requestContext = CreateRazorRequestContext(documentContext);
@@ -193,7 +193,7 @@ public class DocumentOnTypeFormattingEndpointTest(ITestOutputHelper testOutput) 
         {
             TextDocument = new TextDocumentIdentifier { Uri = uri, },
             Character = ".",
-            Position = VsLspFactory.CreatePosition(2, 11),
+            Position = LspFactory.CreatePosition(2, 11),
             Options = new FormattingOptions { InsertSpaces = true, TabSize = 4 }
         };
         Assert.True(documentContextFactory.TryCreate(uri, out var documentContext));

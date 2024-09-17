@@ -15,7 +15,6 @@ using Microsoft.CodeAnalysis.Razor.Remote;
 using Microsoft.CodeAnalysis.Razor.Workspaces;
 using Microsoft.CodeAnalysis.Remote.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
 using Roslyn.LanguageServer.Protocol;
 using Response = Microsoft.CodeAnalysis.Razor.Remote.RemoteResponse<Microsoft.CodeAnalysis.Razor.Protocol.AutoInsert.RemoteAutoInsertTextEdit?>;
 using RoslynInsertTextFormat = Roslyn.LanguageServer.Protocol.InsertTextFormat;
@@ -75,7 +74,7 @@ internal sealed class RemoteAutoInsertService(in ServiceArgs args)
         // that adds closing tag instead of HTML even though we are in HTML
         if (_autoInsertService.TryResolveInsertion(
                 codeDocument,
-                VsLspExtensions.ToPosition(linePosition),
+                linePosition.ToPosition(),
                 character,
                 options.EnableAutoClosingTags,
                 out var insertTextEdit))

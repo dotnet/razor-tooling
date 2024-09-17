@@ -22,8 +22,6 @@ using Microsoft.CodeAnalysis.Razor.DocumentMapping;
 using Microsoft.CodeAnalysis.Razor.Formatting;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Razor.Protocol;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
 using CSharpSyntaxFactory = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Microsoft.AspNetCore.Razor.LanguageServer.CodeActions.Razor;
@@ -116,7 +114,7 @@ internal sealed class GenerateMethodCodeActionResolver(
             classLocationLineSpan.StartLinePosition.Character,
             content);
 
-        var edit = VsLspFactory.CreateTextEdit(
+        var edit = LspFactory.CreateTextEdit(
             line: classLocationLineSpan.EndLinePosition.Line,
             character: 0,
             $"{formattedMethod}{Environment.NewLine}");
@@ -165,7 +163,7 @@ internal sealed class GenerateMethodCodeActionResolver(
             // just get the simplified text that comes back from Roslyn.
 
             var classLocationLineSpan = @class.GetLocation().GetLineSpan();
-            var tempTextEdit = VsLspFactory.CreateTextEdit(
+            var tempTextEdit = LspFactory.CreateTextEdit(
                 line: classLocationLineSpan.EndLinePosition.Line,
                 character: 0,
                 editToSendToRoslyn.NewText);
@@ -196,7 +194,7 @@ internal sealed class GenerateMethodCodeActionResolver(
                 .Replace(FormattingUtilities.InitialIndent, string.Empty)
                 .Replace(FormattingUtilities.Indent, string.Empty);
 
-            var remappedEdit = VsLspFactory.CreateTextEdit(remappedRange, unformattedMethodSignature);
+            var remappedEdit = LspFactory.CreateTextEdit(remappedRange, unformattedMethodSignature);
 
             var delegatedParams = new DelegatedSimplifyMethodParams(documentContext.GetTextDocumentIdentifierAndVersion(), RequiresVirtualDocument: true, remappedEdit);
             var result = await _clientConnection.SendRequestAsync<DelegatedSimplifyMethodParams, TextEdit[]?>(

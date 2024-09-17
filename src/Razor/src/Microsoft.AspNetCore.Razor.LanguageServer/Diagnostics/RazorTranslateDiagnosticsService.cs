@@ -1,6 +1,8 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root for license information.
 
+extern alias RLSP;
+
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
@@ -17,10 +19,8 @@ using Microsoft.CodeAnalysis.Razor.Logging;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Razor.Protocol;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
-using Diagnostic = Microsoft.VisualStudio.LanguageServer.Protocol.Diagnostic;
-using DiagnosticSeverity = Microsoft.VisualStudio.LanguageServer.Protocol.DiagnosticSeverity;
-using Range = Microsoft.VisualStudio.LanguageServer.Protocol.Range;
+using Diagnostic = RLSP::Roslyn.LanguageServer.Protocol.Diagnostic;
+using DiagnosticSeverity = RLSP::Roslyn.LanguageServer.Protocol.DiagnosticSeverity;
 using SyntaxNode = Microsoft.AspNetCore.Razor.Language.Syntax.SyntaxNode;
 
 namespace Microsoft.AspNetCore.Razor.LanguageServer.Diagnostics;
@@ -440,7 +440,7 @@ internal class RazorTranslateDiagnosticsService(IDocumentMappingService document
         return codeDocument.GetSyntaxTree().Diagnostics.Any(razorDiagnosticCode, static (d, code) => d.Id == code);
     }
 
-    private bool TryGetOriginalDiagnosticRange(Diagnostic diagnostic, RazorCodeDocument codeDocument, [NotNullWhen(true)] out Range? originalRange)
+    private bool TryGetOriginalDiagnosticRange(Diagnostic diagnostic, RazorCodeDocument codeDocument, [NotNullWhen(true)] out LspRange? originalRange)
     {
         if (IsRudeEditDiagnostic(diagnostic))
         {
@@ -468,7 +468,7 @@ internal class RazorTranslateDiagnosticsService(IDocumentMappingService document
             // For `Error` Severity diagnostics we still show the diagnostics to
             // the user, however we set the range to an undefined range to ensure
             // clicking on the diagnostic doesn't cause errors.
-            originalRange = VsLspFactory.UndefinedRange;
+            originalRange = LspFactory.UndefinedRange;
         }
 
         return true;
@@ -481,7 +481,7 @@ internal class RazorTranslateDiagnosticsService(IDocumentMappingService document
             str.StartsWith("ENC");
     }
 
-    private bool TryRemapRudeEditRange(Range diagnosticRange, RazorCodeDocument codeDocument, [NotNullWhen(true)] out Range? remappedRange)
+    private bool TryRemapRudeEditRange(LspRange diagnosticRange, RazorCodeDocument codeDocument, [NotNullWhen(true)] out LspRange? remappedRange)
     {
         // This is a rude edit diagnostic that has already been mapped to the Razor document. The mapping isn't absolutely correct though,
         // it's based on the runtime code generation of the Razor document therefore we need to re-map the already mapped diagnostic in a
@@ -539,7 +539,7 @@ internal class RazorTranslateDiagnosticsService(IDocumentMappingService document
                 var diagnosticEndWhitespaceOffset = diagnosticEndCharacter + 1;
                 var endLinePosition = (endLineIndex, diagnosticEndWhitespaceOffset);
 
-                remappedRange = VsLspFactory.CreateRange(startLinePosition, endLinePosition);
+                remappedRange = LspFactory.CreateRange(startLinePosition, endLinePosition);
                 return true;
         }
     }

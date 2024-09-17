@@ -19,6 +19,7 @@ using Microsoft.CodeAnalysis.Razor;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
+using Diagnostic = Microsoft.CodeAnalysis.Diagnostic;
 
 namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests;
 
@@ -279,7 +280,7 @@ public class RazorToolingIntegrationTestBase : ToolingTestBase
 
         var diagnostics = compilation
             .GetDiagnostics()
-            .Where(d => d.Severity != DiagnosticSeverity.Hidden);
+            .Where(d => d.Severity != CodeAnalysis.DiagnosticSeverity.Hidden);
 
         if (diagnostics.Any() && throwOnFailure)
         {

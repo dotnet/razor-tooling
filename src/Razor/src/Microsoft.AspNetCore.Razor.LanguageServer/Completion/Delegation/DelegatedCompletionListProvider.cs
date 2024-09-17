@@ -14,7 +14,6 @@ using Microsoft.CodeAnalysis.Razor;
 using Microsoft.CodeAnalysis.Razor.DocumentMapping;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Razor.Protocol;
-using Microsoft.VisualStudio.LanguageServer.Protocol;
 
 namespace Microsoft.AspNetCore.Razor.LanguageServer.Completion.Delegation;
 
@@ -215,11 +214,11 @@ internal class DelegatedCompletionListProvider
 
         // Edit the CSharp projected document to contain a '.'. This allows C# completion to provide valid
         // completion items for moments when a user has typed a '.' that's typically interpreted as Html.
-        var addProvisionalDot = VsLspFactory.CreateTextEdit(previousPosition, ".");
+        var addProvisionalDot = LspFactory.CreateTextEdit(previousPosition, ".");
 
         var provisionalPositionInfo = new DocumentPositionInfo(
             RazorLanguageKind.CSharp,
-            VsLspFactory.CreatePosition(
+            LspFactory.CreatePosition(
                 previousPosition.Line,
                 previousPosition.Character + 1),
             previousCharacterPositionInfo.HostDocumentIndex + 1);
